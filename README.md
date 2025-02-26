@@ -2,7 +2,7 @@
 
 This repository contains implementations of various numerical methods in C, including root-finding and integration techniques.
 
-## 📂 Project Structure
+## 📂 Coding Contents
 
 | File | Description |
 |------|------------|
