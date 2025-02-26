@@ -31,4 +31,4 @@ This repository contains implementations of various numerical methods in C, incl
 ## 🔧 How to Use
 1. Clone the repository:
    ```sh
-   git clone https://github.com/YourUsername/NMP.git
+   git clone https://github.com/TheLearnerAllTime002/NMP.git
