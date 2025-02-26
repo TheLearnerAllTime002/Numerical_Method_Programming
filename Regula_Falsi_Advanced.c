@@ -86,3 +86,4 @@ void find_root(float a, float b, int show_table)
 
     printf("Root found: %.6f\n", c);
 }
+

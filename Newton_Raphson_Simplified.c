@@ -45,3 +45,4 @@ void newton_raphson(float x0)
 
     printf("\nRoot found: %.6f\n", x1);
 }
+

@@ -54,3 +54,4 @@ void find_root(float a, float b)
 
     printf("%.6f\n", c);
 }
+
