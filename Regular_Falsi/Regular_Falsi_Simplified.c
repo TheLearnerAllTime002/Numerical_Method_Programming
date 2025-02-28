@@ -2,7 +2,7 @@
 #include <math.h>
 
 #define EPSILON 0.0001
-#define f(x) ((x) * (x) * (x) - 9 * (x) + 1) // write your own equation
+#define f(x) ((x) * (x) * (x) - 3 * (x) - 5) // write your own equation
 
 void find_root(float a, float b);
 
