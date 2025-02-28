@@ -2,7 +2,8 @@
 #include <math.h>
 
 #define EPSILON 0.0001
-#define f(x) (2 * (x) * (x) * (x) - 3 * (x) - 6) // Enter Your Given Equation
+#define MAX_ITERATIONS 1000  // Prevents infinite loops
+#define f(x) ((x) * (x) * (x) - 9 * (x) + 1) // Define the given function
 
 void find_root(float a, float b, int show_table);
 
@@ -10,9 +11,12 @@ int main()
 {
     float a, b;
     char choice;
-    printf("Enter the range:\n");
+
+    
+    printf("Enter the range (a b): ");
     scanf("%f %f", &a, &b);
 
+    
     printf("Do you want to see the iteration table? (y/n): ");
     scanf(" %c", &choice);
 
@@ -23,12 +27,9 @@ int main()
 
     printf("\nSearching for roots in the interval [%.2f, %.2f]:\n", a, b);
 
-    for (float i = a; i < b; i += step)
+    for (float i = a; i < b - step / 2; i += step) 
     {
-        if (i + step > b)
-            break;
-
-        if (f(i) * f(i + step) < 0)
+        if (f(i) * f(i + step) < 0) 
         {
             printf("\nRoot found in the interval [%.2f, %.2f]:\n", i, i + step);
             find_root(i, i + step, show_table);
@@ -36,7 +37,11 @@ int main()
         }
     }
 
-    printf("\nTotal roots found: %d\n", root_count);
+    if (root_count == 0)
+        printf("\nNo roots found in the given range.\n");
+    else
+        printf("\nTotal roots found: %d\n", root_count);
+
     return 0;
 }
 
@@ -45,7 +50,7 @@ void find_root(float a, float b, int show_table)
     float c, fc;
     int iteration = 0;
 
-    if (f(a) * f(b) >= 0)
+    if (f(a) * f(b) >= 0) 
     {
         printf("Invalid range: f(a) and f(b) must have opposite signs.\n");
         return;
@@ -53,8 +58,8 @@ void find_root(float a, float b, int show_table)
 
     if (show_table)
     {
-        printf("\nIteration\t  a\t  b\t   c (False Position)\t  f(c)\t\n");
-        printf("-------------------------------------------------------------------\n");
+        printf("\nIteration\t  a\t  b\t   c (False Position)\t  f(c)\n");
+        printf("---------------------------------------------------------------\n");
     }
 
     do
@@ -69,20 +74,17 @@ void find_root(float a, float b, int show_table)
         }
 
         if (fabs(fc) < EPSILON) // Root found
-        {
             break;
-        }
 
         if (f(a) * fc < 0)
-        {
             b = c; // Root lies in [a, c]
-        }
         else
-        {
             a = c; // Root lies in [c, b]
-        }
 
-    } while (fabs(fc) > EPSILON);
+    } while (fabs(fc) > EPSILON && iteration < MAX_ITERATIONS);
+
+    if (iteration >= MAX_ITERATIONS)
+        printf("Warning: Maximum iterations reached. The method may not have fully converged.\n");
 
     printf("Root found: %.6f\n", c);
 }
