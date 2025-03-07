@@ -2,47 +2,71 @@
 #include <math.h>
 
 #define EPSILON 0.0001
-#define f(x) ((x) * sin(x) + cos(x)) // Function
-#define df(x) (x * cos(x))           // Derivative of function
+#define f(x) ((x) * (x) * (x) - 3 * (x) - 5) // Function definition
+#define df(x) (3 * (x) * (x) - 3)            // Derivative of the function
 
-void newton_raphson(float x0);
+void find_root(float a, float b);
 
 int main()
 {
-    float x0;
-    printf("Enter an initial guess: ");
-    scanf("%f", &x0);
-
-    newton_raphson(x0);
-    return 0;
-}
-
-void newton_raphson(float x0)
-{
-    float x1;
-    int iteration = 0;
-
-    printf("\nIteration\t x_n\t\t f(x_n)\n");
-    printf("--------------------------------------\n");
+    float a, b;
+    float step = 0.01; // Searching frequency
+    int root_found;
 
     do
     {
-        if (fabs(df(x0)) < EPSILON) // Prevent division by zero
+        printf("Enter the range: ");
+        scanf("%f %f", &a, &b);
+
+        root_found = 0;
+
+        for (float i = a; i < b; i += step)
         {
-            printf("Mathematical error: Derivative near zero. Choose a different initial guess.\n");
+            if (i + step > b)
+                break;
+
+            if (f(i) * f(i + step) < 0)
+            {
+                printf("Root found in range [%.2f, %.2f]: ", i, i + step);
+                find_root(i, i + step);
+                root_found = 1;
+            }
+        }
+
+        if (!root_found)
+            printf("No roots found in the given range. Please enter a new range.\n");
+
+    } while (!root_found);
+
+    return 0;
+}
+
+void find_root(float a, float b)
+{
+    float x = (a + b) / 2; // Initial guess (midpoint of the interval)
+    float fx, dfx;
+    int iteration = 0;
+
+    do
+    {
+        fx = f(x);
+        dfx = df(x);
+
+        if (dfx == 0.0)
+        {
+            printf("Derivative is zero. Newton-Raphson method cannot proceed.\n");
             return;
         }
 
-        x1 = x0 - f(x0) / df(x0); // Newton-Raphson formula
-        printf("%d\t\t %.6f\t %.6f\n", ++iteration, x1, f(x1));
+        float x_new = x - fx / dfx;
 
-        if (fabs(f(x1)) < EPSILON) // Root found
+        if (fabs(x_new - x) < EPSILON)
             break;
 
-        x0 = x1;
+        x = x_new;
+        iteration++;
 
-    } while (fabs(f(x1)) > EPSILON);
+    } while (fabs(fx) > EPSILON);
 
-    printf("\nRoot found: %.6f\n", x1);
+    printf("Root: %.6f found after %d iterations\n", x, iteration);
 }
-
