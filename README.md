@@ -8,7 +8,8 @@ This repository contains implementations of various numerical methods in C, incl
 |------|------------|
 | `Bisection_Method_Advanced.c` | Advanced implementation of the Bisection method |
 | `Bisection_Method_Simplified.c` | Simplified version of the Bisection method |
-| `Newton_Raphson_Simplified.c` | Newton-Raphson method implementation |
+| `Newton_Raphson_Simplified.c` | Simplified implementation of Newton-Raphson method implementation |
+| `Newton_Raphson_Advanced.c` | Advanced implementation of Newton-Raphson method implementation |
 | `Regula_Falsi_Advanced.c` | Advanced implementation of the Regula Falsi method |
 | `Regular_Falsi_Simplified.c` | Simplified version of the Regula Falsi method |
 | `Trapezoidal_Rule.c` | Numerical integration using the Trapezoidal Rule |
