@@ -1,0 +1,92 @@
+#include <stdio.h>
+#include <math.h>
+
+#define EPSILON 0.0001
+#define MAX_ITERATIONS 1000
+#define f(x) ((x) * (x) * (x) - 8 * (x) - 4) // Given function
+#define df(x) (3 * (x) * (x) - 8)           // Derivative of the function
+
+void find_root(float a, float b, int show_table);
+
+int main()
+{
+    float a, b;
+    char choice;
+    int root_count;
+    float step = 0.1;
+
+    do
+    {
+        printf("Enter the range : ");
+        scanf("%f %f", &a, &b);
+
+        printf("Do you want to see the iteration table? (y/n): ");
+        scanf(" %c", &choice);
+        int show_table = (choice == 'y' || choice == 'Y');
+
+        root_count = 0;
+
+        printf("\nSearching for roots in the interval [%.2f, %.2f]:\n", a, b);
+
+        for (float i = a; i < b - step / 2; i += step)
+        {
+            if (f(i) * f(i + step) < 0)
+            {
+                printf("\nRoot found in the interval [%.2f, %.2f]:\n", i, i + step);
+                find_root(i, i + step, show_table);
+                root_count++;
+            }
+        }
+
+        if (root_count == 0)
+            printf("\nNo roots found in the given range. Please enter a new range.\n");
+
+    } while (root_count == 0);
+
+    printf("\nTotal roots found: %d\n", root_count);
+    return 0;
+}
+
+void find_root(float a, float b, int show_table)
+{
+    float x = (a + b) / 2; // Initial guess: Midpoint of the interval
+    float fx, dfx;
+    int iteration = 0;
+
+    if (show_table)
+    {
+        printf("\nIteration\t  x\t   f(x)\t    f'(x)\n");
+        printf("-------------------------------------------------\n");
+    }
+
+    do
+    {
+        fx = f(x);
+        dfx = df(x);
+
+        if (dfx == 0.0)
+        {
+            printf("Derivative is zero. Newton-Raphson method cannot proceed.\n");
+            return;
+        }
+
+        float x_new = x - fx / dfx;
+
+        if (show_table)
+        {
+            printf("%d\t %.6f\t %.6f\t %.6f\n", iteration, x, fx, dfx);
+        }
+
+        if (fabs(x_new - x) < EPSILON) 
+            break;
+
+        x = x_new;
+        iteration++;
+
+    } while (fabs(fx) > EPSILON && iteration < MAX_ITERATIONS);
+
+    if (iteration >= MAX_ITERATIONS)
+        printf("Warning: Maximum iterations reached. The method may not have fully converged.\n");
+
+    printf("Root found: %.6f\n", x);
+}
