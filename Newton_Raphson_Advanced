@@ -4,10 +4,9 @@
 #define EPSILON 0.0001
 #define MAX_ITERATIONS 1000
 #define f(x) ((x) * (x) * (x) - 8 * (x) - 4)  // Given function
-#define df(x) (3 * (x) * (x) - 8)            // Derivative of function
 
-double newton_raphson(double a, double b, int show_table);
-int find_all_roots(double a, double b, double step, int show_table);
+void find_root_ita(double a, double b, int show_table);
+int find_all_roots_ita(double a, double b, double step, int show_table);
 
 int main() {
     double a, b, step = 0.1;
@@ -22,7 +21,7 @@ int main() {
         scanf(" %c", &choice);
         int show_table = (choice == 'y' || choice == 'Y');
         
-        root_count = find_all_roots(a, b, step, show_table);
+        root_count = find_all_roots_ita(a, b, step, show_table);
         
         if (root_count == 0)
             printf("\nNo roots found in [%.2lf, %.2lf]. Try another range.\n", a, b);
@@ -32,14 +31,14 @@ int main() {
     return 0;
 }
 
-int find_all_roots(double a, double b, double step, int show_table) {
+int find_all_roots_ita(double a, double b, double step, int show_table) {
     int count = 0;
     printf("\nSearching for roots in [%.2lf, %.2lf]:\n", a, b);
     
-    for (double i = a; i < b - step/2; i += step) {
+    for (double i = a; i < b - step / 2; i += step) {
         if (f(i) * f(i + step) < 0) {
             printf("\nRoot found in [%.2lf, %.2lf]:\n", i, i + step);
-            newton_raphson(i, i + step, show_table);
+            find_root_ita(i, i + step, show_table);
             count++;
         }
     }
@@ -47,50 +46,36 @@ int find_all_roots(double a, double b, double step, int show_table) {
     return count;
 }
 
-double newton_raphson(double a, double b, int show_table) {
-    double x = (fabs(f(a)) < fabs(f(b))) ? a : b;
-    double fx, dfx, x_new;
+void find_root_ita(double a, double b, int show_table) {
+    double c, fc;
     int iteration = 0;
-    
+
     if (show_table) {
-        printf("\nIteration\t    x\t\t   f(x)\t\t  f'(x)\n");
-        printf("----------------------------------------------------------\n");
+        printf("\nIter\t    a\t\t    b\t\t    c (Mid)\t    f(c)\n");
+        printf("---------------------------------------------------------------\n");
     }
-    
+
     do {
-        fx = f(x);
-        dfx = df(x);
-        
-        if (fabs(dfx) < EPSILON) {
-            printf("Warning: Derivative near zero (%.10lf). Using bisection step.\n", dfx);
-            x = (a + b) / 2;
-            continue;
-        }
-        
-        x_new = x - fx / dfx;
-        
-        if (x_new < a || x_new > b) {
-            double mid = (a + b) / 2;
-            printf("Warning: Solution diverging outside interval. Resetting to midpoint.\n");
-            x_new = mid;
-        }
-        
-        if (show_table) {
-            printf("%5d\t%12.8lf\t%12.8lf\t%12.8lf\n", iteration, x, fx, dfx);
-        }
-        
-        if (fabs(x_new - x) < EPSILON || fabs(fx) < EPSILON)
-            break;
-            
-        x = x_new;
+        c = (a + b) / 2;
+        fc = f(c);
         iteration++;
-    } while (iteration < MAX_ITERATIONS);
-    
+
+        if (show_table)
+            printf("%5d\t%12.8lf\t%12.8lf\t%12.8lf\t%12.8lf\n", iteration, a, b, c, fc);
+
+        if (fabs(fc) < EPSILON) // Stopping condition
+            break;
+
+        if (f(a) * fc < 0)
+            b = c;
+        else
+            a = c;
+
+    } while ((b - a) / 2 > EPSILON && iteration < MAX_ITERATIONS);
+
     if (iteration >= MAX_ITERATIONS)
-        printf("Warning: Maximum iterations reached. May not have fully converged.\n");
+        printf("Warning: Max iterations reached. May not have fully converged.\n");
         
-    printf("Root found: %.10lf (f(x) = %.10e)\n", x, f(x));
+    printf("Root found: %.10lf (f(x) = %.10e)\n", c, f(c));
     printf("Converged in %d iterations\n", iteration);
-    
-    return x;
 }
