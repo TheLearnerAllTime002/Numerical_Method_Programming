@@ -3,40 +3,26 @@
 
 #define EPSILON 0.0001
 #define MAX_ITERATIONS 1000
-#define f(x) ((x) * (x) * (x) - 8 * (x) - 4) // Given function
-#define df(x) (3 * (x) * (x) - 8)           // Derivative of the function
+#define f(x) ((x) * (x) * (x) - 3 * (x) - 5)  // Given function
+#define df(x) (3 * (x) * (x) - 3)            // Derivative of function
 
-void find_root(float a, float b, int show_table);
+void find_root_newton(float initial_guess, int show_table);
+int find_all_roots_newton(float a, float b, float step, int show_table);
 
-int main()
-{
-    float a, b;
+int main() {
+    float a, b, step = 0.1;
     char choice;
     int root_count;
-    float step = 0.1;
 
-    do
-    {
-        printf("Enter the range : ");
+    do {
+        printf("Enter the range: ");
         scanf("%f %f", &a, &b);
 
-        printf("Do you want to see the iteration table? (y/n): ");
+        printf("Show iteration table? (y/n): ");
         scanf(" %c", &choice);
         int show_table = (choice == 'y' || choice == 'Y');
 
-        root_count = 0;
-
-        printf("\nSearching for roots in the interval [%.2f, %.2f]:\n", a, b);
-
-        for (float i = a; i < b - step / 2; i += step)
-        {
-            if (f(i) * f(i + step) < 0)
-            {
-                printf("\nRoot found in the interval [%.2f, %.2f]:\n", i, i + step);
-                find_root(i, i + step, show_table);
-                root_count++;
-            }
-        }
+        root_count = find_all_roots_newton(a, b, step, show_table);
 
         if (root_count == 0)
             printf("\nNo roots found in the given range. Please enter a new range.\n");
@@ -47,46 +33,56 @@ int main()
     return 0;
 }
 
-void find_root(float a, float b, int show_table)
-{
-    float x = (a + b) / 2; // Initial guess: Midpoint of the interval
-    float fx, dfx;
-    int iteration = 0;
+int find_all_roots_newton(float a, float b, float step, int show_table) {
+    int count = 0;
+    printf("\nSearching for roots in [%.2f, %.2f]:\n", a, b);
 
-    if (show_table)
-    {
-        printf("\nIteration\t  x\t   f(x)\t    f'(x)\n");
-        printf("-------------------------------------------------\n");
+    for (float i = a; i < b; i += step) {
+        if (f(i) * f(i + step) < 0) {
+            float initial_guess = (i + i + step) / 2; // Midpoint as initial guess
+            printf("\nRoot found near %.2f, using Newton-Raphson:\n", initial_guess);
+            find_root_newton(initial_guess, show_table);
+            count++;
+        }
     }
 
-    do
-    {
+    return count;
+}
+
+void find_root_newton(float x, int show_table) {
+    int iteration = 0;
+    float fx, dfx, x_new;
+
+    if (show_table) {
+        printf("\nIteration\t    x\t\t   f(x)\t\t  f'(x)\n");
+        printf("----------------------------------------------------------\n");
+    }
+
+    do {
         fx = f(x);
         dfx = df(x);
 
-        if (dfx == 0.0)
-        {
-            printf("Derivative is zero. Newton-Raphson method cannot proceed.\n");
+        if (fabs(dfx) < EPSILON) { // Prevent division by zero
+            printf("Warning: Derivative near zero. Stopping iteration.\n");
             return;
         }
 
-        float x_new = x - fx / dfx;
+        x_new = x - fx / dfx;
 
-        if (show_table)
-        {
-            printf("%d\t %.6f\t %.6f\t %.6f\n", iteration, x, fx, dfx);
+        if (show_table) {
+            printf("%5d\t%12.6f\t%12.6f\t%12.6f\n", iteration, x, fx, dfx);
         }
 
-        if (fabs(x_new - x) < EPSILON) 
+        if (fabs(x_new - x) < EPSILON || fabs(fx) < EPSILON)
             break;
 
         x = x_new;
         iteration++;
 
-    } while (fabs(fx) > EPSILON && iteration < MAX_ITERATIONS);
+    } while (iteration < MAX_ITERATIONS);
 
     if (iteration >= MAX_ITERATIONS)
-        printf("Warning: Maximum iterations reached. The method may not have fully converged.\n");
+        printf("Warning: Maximum iterations reached. May not have fully converged.\n");
 
-    printf("Root found: %.6f\n", x);
+    printf("Final Root: %.6f found after %d iterations\n", x, iteration);
 }
