@@ -1,38 +1,58 @@
 # 📌 Numerical Methods in C (NMP)
 
-This repository contains implementations of various numerical methods in C, including root-finding and integration techniques.
+This repository contains implementations of various numerical methods in C, including root-finding, interpolation, and integration techniques.
 
-## 📂 Coding Contents
+## 📂 Repository Structure
 
-| File | Description |
-|------|------------|
-| `Bisection_Method_Advanced.c` | Advanced implementation of the Bisection method |
-| `Bisection_Method_Simplified.c` | Simplified version of the Bisection method |
-| `Newton_Raphson_Simplified.c` | Simplified implementation of Newton-Raphson method implementation |
-| `Newton_Raphson_Advanced.c` | Advanced implementation of Newton-Raphson method implementation |
-| `Regula_Falsi_Advanced.c` | Advanced implementation of the Regula Falsi method |
-| `Regular_Falsi_Simplified.c` | Simplified version of the Regula Falsi method |
-| `Trapezoidal_Rule.c` | Numerical integration using the Trapezoidal Rule |
+### Root Finding Methods
+| File | Description | Status |
+|------|------------|--------|
+| `Bisection_Method_Advanced.c` | Advanced implementation of Bisection method | ⬜ |
+| `Bisection_Method_Simplified.c` | Simplified Bisection method | ⬜ |
+| `Newton_Raphson_Simplified.c` | Basic Newton-Raphson implementation | ✅ |
+| `Newton_Raphson_Advanced.c` | Enhanced Newton-Raphson method | ⬜ |
+| `Regula_Falsi_Advanced.c` | Advanced Regula Falsi method | ⬜ |
+| `Regular_Falsi_Simplified.c` | Simplified Regula Falsi | ⬜ |
 
-## 🚀 Features
-- **Efficient** implementations of numerical methods.
-- **Beginner-friendly** code with clear structure and comments.
-- Covers **root-finding** and **integration** techniques.
-- Easy to understand and modify for educational purposes.
+### Interpolation Methods
+| File | Description | Status |
+|------|------------|--------|
+| `Interpolation_Methods.c` | Contains forward/backward difference methods | ✅ |
 
-## 📖 Methods Included
-1. **Root Finding Algorithms**
+### Numerical Integration
+| File | Description | Status |
+|------|------------|--------|
+| `Trapezoidal_Rule.c` | Basic Trapezoidal Rule implementation | ✅ |
+| `Simpsons_Rule.c` | Simpson's 1/3 Rule for integration | ✅ |
+| `Weddles_Rule.c` | Weddle's Rule for higher accuracy | ✅ |
+
+## 🚀 Key Features
+- **Comprehensive** collection of numerical methods
+- **Two versions** for each method (simplified & advanced)
+- **Well-documented** code with clear examples
+- **Modular design** for easy adaptation
+- **Practical examples** included in each implementation
+
+## 📖 Methods Overview
+1. **Root Finding**
    - 🟢 Bisection Method
    - 🔵 Newton-Raphson Method
    - 🔴 Regula Falsi Method
 
-2. **Numerical Integration**
-   - 🟠 Trapezoidal Rule
+2. **Interpolation**
+   - 🟣 Newton's Forward/Backward Difference
+   - 🟠 Lagrange Interpolation
 
-## 🔧 How to Use
+3. **Numerical Integration**
+   - 🟡 Trapezoidal Rule
+   - 🔵 Simpson's 1/3 Rule
+   - 🟢 Weddle's Rule
+
+## 🔧 Getting Started
 1. Clone the repository:
    ```sh
    git clone https://github.com/TheLearnerAllTime002/NMP.git
+   cd NMP
 2. Compile any program using GCC:
    ```sh
    gcc Bisection_Method_Simplified.c -o bisection -lm
