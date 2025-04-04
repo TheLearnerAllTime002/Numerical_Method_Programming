@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <math.h>
+#include <conio.h>
 
 double f(double x) {
-    return 1.0 / sqrt(1.0 + x * x * x);
+    return 1.0 / (1.0 + x * x);
 }
 
 int main() {
@@ -13,12 +14,15 @@ int main() {
     scanf("%lf", &lower);
     printf("Enter upper limit of integration: ");
     scanf("%lf", &upper);
-    printf("Enter number of sub intervals (must be multiple of 6): ");
-    scanf("%d", &subIntervals);
 
-    if (subIntervals % 6 != 0) {
-        printf("Error: Number of sub-intervals must be multiple of 6 for Weddle's rule.\n");
-        return 1;
+    while (1) {
+        printf("Enter number of sub intervals (must be multiple of 6): ");
+        scanf("%d", &subIntervals);
+        
+        if (subIntervals % 6 == 0 && subIntervals > 0) {
+            break;  j
+        }
+        printf("Error: Number of sub-intervals must be a positive multiple of 6. Please try again.\n");
     }
 
     h = (upper - lower) / subIntervals;
