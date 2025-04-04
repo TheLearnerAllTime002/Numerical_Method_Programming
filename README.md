@@ -48,7 +48,7 @@ This repository contains implementations of various numerical methods in C, incl
    - 🔵 Simpson's 1/3 Rule
    - 🟢 Weddle's Rule
 
-## 🔧 Getting Started
+## 🔧 How to use :
 1. Clone the repository:
    ```sh
    git clone https://github.com/TheLearnerAllTime002/NMP.git
