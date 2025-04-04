@@ -1,5 +1,5 @@
-#include<stdio.h>
-#include<math.h>
+#include <stdio.h>
+#include <math.h>
 
 #define f(x) (1.0 / sqrt(1 + x * x * x))
 
@@ -12,12 +12,15 @@ int main()
     scanf("%f", &lower);
     printf("Enter upper limit of integration: ");
     scanf("%f", &upper);
-    printf("Enter number of sub intervals (must be even): ");
-    scanf("%d", &subInterval);
 
-    if (subInterval % 2 != 0) {
-        printf("Error: Number of sub-intervals must be even for Simpson's 1/3 Rule.\n");
-        return 1;
+    while (1) {
+        printf("Enter number of sub intervals (must be even): ");
+        scanf("%d", &subInterval);
+
+        if (subInterval % 2 == 0 && subInterval > 0) {
+            break;  
+        }
+        printf("Error: Number of sub-intervals must be even and positive. Please try again.\n");
     }
 
     stepSize = (upper - lower) / subInterval;
